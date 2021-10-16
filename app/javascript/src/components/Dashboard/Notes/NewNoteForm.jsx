@@ -1,11 +1,14 @@
 import React from "react";
 
+import { Check } from "@bigbinary/neeto-icons";
 import { Formik, Form } from "formik";
-import { Button } from "neetoui";
-import { Input, Textarea } from "neetoui/formik";
-import * as yup from "yup";
+import { Input, Select } from "neetoui/formik";
+import { Button } from "neetoui/v2";
 
 import notesApi from "apis/notes";
+import FORM_INITIAL_VALUES from "constants/formInitialValues";
+import FORM_SELECT_OPTIONS from "constants/formSelectOptions";
+import FORM_VALIDATION_SCHEMAS from "constants/formValidationSchemas";
 
 export default function NewNoteForm({ onClose, refetch }) {
   const handleSubmit = async values => {
@@ -19,36 +22,64 @@ export default function NewNoteForm({ onClose, refetch }) {
   };
   return (
     <Formik
-      initialValues={{
-        title: "",
-        description: ""
-      }}
+      initialValues={FORM_INITIAL_VALUES.addNoteForm}
       onSubmit={handleSubmit}
-      validationSchema={yup.object({
-        title: yup.string().required("Title is required"),
-        description: yup.string().required("Description is required")
-      })}
+      validationSchema={FORM_VALIDATION_SCHEMAS.addNoteForm}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, handleChange }) => (
         <Form>
-          <Input label="Title" name="title" className="mb-6" />
-          <Textarea label="Description" name="description" rows={8} />
+          <div className="px-10">
+            <Input
+              label="Title"
+              name="title"
+              placeholder="Enter note title"
+              className="mb-6"
+              required
+            />
+            <Input
+              label="Description"
+              name="description"
+              placeholder="Enter note description"
+              className="mb-6"
+              required
+            />
+            <Select
+              label="Assigned Contact"
+              name="assigned-contact"
+              options={FORM_SELECT_OPTIONS.addNoteForm.assignedContact}
+              onChange={({ value }) => handleChange("assigned-contact")(value)}
+              placeholder="Select a Contact"
+              className="mb-6"
+              required
+            />
+            <Select
+              label="Tags"
+              name="tags"
+              options={FORM_SELECT_OPTIONS.addNoteForm.tags}
+              onChange={({ value }) => handleChange("tags")(value)}
+              placeholder="Select a Tag"
+              className="mb-6"
+              required
+            />
+          </div>
+
           <div className="nui-pane__footer nui-pane__footer--absolute">
+            <Button
+              type="submit"
+              label="Save Changes"
+              size="large"
+              style="primary"
+              disabled={isSubmitting}
+              loading={isSubmitting}
+              icon={() => <Check size={20} className="ml-2" />}
+              className="justify-around h-10"
+            />
             <Button
               onClick={onClose}
               label="Cancel"
               size="large"
-              style="secondary"
-            />
-
-            <Button
-              type="submit"
-              label="Submit"
-              size="large"
-              style="primary"
-              className="ml-2"
-              disabled={isSubmitting}
-              loading={isSubmitting}
+              style="text"
+              className="text-gray-500"
             />
           </div>
         </Form>
