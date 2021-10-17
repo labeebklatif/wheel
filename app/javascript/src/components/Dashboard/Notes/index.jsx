@@ -84,13 +84,12 @@ const Notes = () => {
         setShowPane={setShowNewNotePane}
         fetchNotes={fetchNotes}
       />
-      {showDeleteAlert && (
-        <DeleteAlert
-          selectedNoteIds={selectedNoteIds}
-          onClose={() => setShowDeleteAlert(false)}
-          refetch={fetchNotes}
-        />
-      )}
+      <DeleteAlert
+        isOpen={showDeleteAlert}
+        selectedNoteIds={selectedNoteIds}
+        onClose={() => setShowDeleteAlert(false)}
+        refetch={fetchNotes}
+      />
     </>
   );
 };
