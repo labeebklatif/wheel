@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 
-import { Modal } from "neetoui";
+import { Modal, Button, Typography } from "neetoui/v2";
 
 import notesApi from "apis/notes";
 
-export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
+export default function DeleteAlert({
+  refetch,
+  isOpen,
+  onClose,
+  selectedNoteIds
+}) {
   const [deleting, setDeleting] = useState(false);
   const handleDelete = async () => {
     try {
@@ -19,33 +24,25 @@ export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
     }
   };
   return (
-    <Modal
-      isOpen
-      size="small"
-      autoHeight
-      showFooter
-      submitButtonProps={{
-        style: "danger",
-        label: "Continue anyway",
-        loading: deleting,
-        onClick: handleDelete
-      }}
-      onClose={onClose}
-    >
-      <div className="flex">
-        <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 bg-red-100 rounded-full">
-          <i className="text-red-500 ri-alarm-warning-fill ri-lg"></i>
-        </div>
-
-        <div className="ml-4">
-          <h3 className="mb-2 text-lg font-medium text-gray-700">
-            Delete {selectedNoteIds.length} notes?
-          </h3>
-          <div className="text-sm leading-5 text-gray-500">
-            Are you sure you want to continue? This cannot be undone.
-          </div>
-        </div>
-      </div>
+    <Modal isOpen={isOpen} onClose={onClose} size="md">
+      <Modal.Header>
+        <Typography style="h2">Delete Note</Typography>
+      </Modal.Header>
+      <Modal.Body>
+        <Typography style="body2" lineHeight="normal">
+          Are you sure you want to delete the note? This action cannot be
+          undone.
+        </Typography>
+      </Modal.Body>
+      <Modal.Footer className="space-x-2">
+        <Button
+          label="Continue"
+          onClick={handleDelete}
+          size="large"
+          loading={deleting}
+        />
+        <Button style="text" label="Cancel" onClick={onClose} size="large" />
+      </Modal.Footer>
     </Modal>
   );
 }

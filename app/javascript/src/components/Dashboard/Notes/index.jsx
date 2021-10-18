@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import EmptyNotesListImage from "images/EmptyNotesList";
-import { Button, PageLoader } from "neetoui";
-import { Header, SubHeader } from "neetoui/layouts";
+import { PageLoader } from "neetoui";
 
 import notesApi from "apis/notes";
 import EmptyState from "components/Common/EmptyState";
+import { getInitialSidebarLink } from "helpers/notes";
 
 import DeleteAlert from "./DeleteAlert";
 import NewNotePane from "./NewNotePane";
-import NoteTable from "./NoteTable";
+import NotesCategories from "./NotesCategories";
+import NotesHeader from "./NotesHeader";
+import NotesList from "./NotesList";
 
 const Notes = () => {
   const [loading, setLoading] = useState(true);
   const [showNewNotePane, setShowNewNotePane] = useState(false);
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedNoteIds, setSelectedNoteIds] = useState([]);
+  const [showCategoryPane, setShowCategoryPane] = useState(true);
+  const [selectedNoteCategory, setSelectedNoteCategory] = useState(
+    getInitialSidebarLink()
+  );
   const [notes, setNotes] = useState([]);
+  const selectedNoteId = useRef(null);
 
   useEffect(() => {
     fetchNotes();
@@ -35,41 +40,40 @@ const Notes = () => {
     }
   };
 
+  const onDeleteNote = note => {
+    selectedNoteId.current = note.id;
+    setShowDeleteAlert(true);
+  };
+
+  const onCloseDeleteAlert = () => {
+    setShowDeleteAlert(false);
+    selectedNoteId.current = null;
+  };
+
   if (loading) {
     return <PageLoader />;
   }
 
   return (
     <>
-      <Header
-        title="Notes"
-        actionBlock={
-          <Button
-            onClick={() => setShowNewNotePane(true)}
-            label="Add New Note"
-            icon="ri-add-line"
-          />
-        }
-      />
       {notes.length ? (
-        <>
-          <SubHeader
-            searchProps={{
-              value: searchTerm,
-              onChange: e => setSearchTerm(e.target.value),
-              clear: () => setSearchTerm("")
-            }}
-            deleteButtonProps={{
-              onClick: () => setShowDeleteAlert(true),
-              disabled: !selectedNoteIds.length
-            }}
+        <div className="flex w-full">
+          <NotesCategories
+            visible={showCategoryPane}
+            selectedCategory={selectedNoteCategory}
+            onChangeCategory={setSelectedNoteCategory}
           />
-          <NoteTable
-            selectedNoteIds={selectedNoteIds}
-            setSelectedNoteIds={setSelectedNoteIds}
-            notes={notes}
-          />
-        </>
+          <div className="flex-1 p-4">
+            <NotesHeader
+              activeCategory={selectedNoteCategory}
+              onToggleMenu={() => setShowCategoryPane(!showCategoryPane)}
+              addButtonProps={{
+                onClick: () => setShowNewNotePane(true)
+              }}
+            />
+            <NotesList notes={notes} noteApi={{ onDelete: onDeleteNote }} />
+          </div>
+        </div>
       ) : (
         <EmptyState
           image={EmptyNotesListImage}
@@ -84,13 +88,12 @@ const Notes = () => {
         setShowPane={setShowNewNotePane}
         fetchNotes={fetchNotes}
       />
-      {showDeleteAlert && (
-        <DeleteAlert
-          selectedNoteIds={selectedNoteIds}
-          onClose={() => setShowDeleteAlert(false)}
-          refetch={fetchNotes}
-        />
-      )}
+      <DeleteAlert
+        isOpen={showDeleteAlert}
+        selectedNoteIds={[selectedNoteId.current]}
+        onClose={onCloseDeleteAlert}
+        refetch={fetchNotes}
+      />
     </>
   );
 };
