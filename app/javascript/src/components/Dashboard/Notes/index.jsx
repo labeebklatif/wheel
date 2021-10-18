@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import EmptyNotesListImage from "images/EmptyNotesList";
 import { PageLoader } from "neetoui";
@@ -22,6 +22,7 @@ const Notes = () => {
     getInitialSidebarLink()
   );
   const [notes, setNotes] = useState([]);
+  const selectedNoteId = useRef(null);
 
   useEffect(() => {
     fetchNotes();
@@ -37,6 +38,16 @@ const Notes = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const onDeleteNote = note => {
+    selectedNoteId.current = note;
+    setShowDeleteAlert(true);
+  };
+
+  const onCloseDeleteAlert = () => {
+    setShowDeleteAlert(false);
+    selectedNoteId.current = null;
   };
 
   if (loading) {
@@ -60,10 +71,7 @@ const Notes = () => {
                 onClick: () => setShowNewNotePane(true)
               }}
             />
-            <NotesList
-              notes={notes}
-              noteApi={{ onDelete: () => setShowDeleteAlert(true) }}
-            />
+            <NotesList notes={notes} noteApi={{ onDelete: onDeleteNote }} />
           </div>
         </div>
       ) : (
@@ -82,8 +90,8 @@ const Notes = () => {
       />
       <DeleteAlert
         isOpen={showDeleteAlert}
-        selectedNoteIds={[]}
-        onClose={() => setShowDeleteAlert(false)}
+        selectedNoteIds={[selectedNoteId.current]}
+        onClose={onCloseDeleteAlert}
         refetch={fetchNotes}
       />
     </>
