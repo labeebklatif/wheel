@@ -41,7 +41,7 @@ const Notes = () => {
   };
 
   const onDeleteNote = note => {
-    selectedNoteId.current = note;
+    selectedNoteId.current = note.id;
     setShowDeleteAlert(true);
   };
 
