@@ -12,5 +12,11 @@ export default {
     lastName: "",
     password: "",
     passwordConfirmation: ""
+  },
+  addNoteForm: {
+    title: "",
+    description: "",
+    "assigned-contact": "",
+    tags: ""
   }
 };
