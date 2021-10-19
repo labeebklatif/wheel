@@ -14,10 +14,11 @@ const ContactsHeader = ({ activeCategory, onToggleMenu, addButtonProps }) => {
         prefix={<Search size={16} />}
       />
       <Button
-        className="mx-2"
+        className="mx-2 text-sm"
         label="Add Contact"
         style="primary"
-        icon={() => <Plus size={20} />}
+        icon={() => <Plus size={18} className="ml-2" />}
+        size="large"
         {...addButtonProps}
       />
     </>

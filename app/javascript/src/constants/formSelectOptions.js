@@ -20,5 +20,11 @@ export default {
         value: "tag2"
       }
     ]
+  },
+  addContactForm: {
+    roles: [
+      { label: "Owner", value: "owner" },
+      { label: "Customer", value: "customer" }
+    ]
   }
 };

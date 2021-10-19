@@ -1,43 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 import EmptyNotesListImage from "images/EmptyNotesList";
 
 import EmptyState from "components/Common/EmptyState";
 import { getInitialContactCategory } from "helpers/contacts";
 
+import DeleteContactAlert from "./ContactDeleteAlert";
 import ContactsCategories from "./ContactsCategories";
 import ContactsHeader from "./ContactsHeader";
 import ContactsTable from "./ContactsTable";
+import NewContactPane from "./NewContactPane";
 
 const Contacts = () => {
-  const [contactsList, setContactsList] = useState(
-    Array(10).fill({
-      name: "Oliver Smith",
-      email: "oliver@smith.com",
-      created_at: new Date(),
-      type: "Owner"
-    })
-  );
+  const [contactsList, setContactsList] = useState([]);
   const [showCategoryPane, setShowCategoryPane] = useState(false);
   const [showAddContactPane, setShowAddContactPane] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedContactCategory, setSelectedContactCategory] = useState(
     getInitialContactCategory()
   );
-
-  const addContact = contact => {
-    contact.id = Date.now();
-    // @ts-ignore
-    setContactsList([...contactsList, contact]);
-  };
-  const deleteContact = contact => {
-    const nextContacts = contactsList.filter(({ id }) => id !== contact.id);
-    // @ts-ignore
-    setContactsList(nextContacts);
-  };
+  const selectedContact = useRef(null);
 
   const contactsApi = {
-    add: addContact,
-    delete: deleteContact
+    add: contact => {
+      contact.id = Date.now();
+      contact.created_at = new Date();
+      // @ts-ignore
+      setContactsList([...contactsList, contact]);
+    },
+    delete: contact => {
+      const nextContacts = contactsList.filter(({ id }) => id !== contact.id);
+      // @ts-ignore
+      setContactsList(nextContacts);
+    }
+  };
+
+  const onSubmitNewContact = values => {
+    contactsApi.add(values);
+    setShowAddContactPane(false);
+  };
+  const onDeleteContact = contact => {
+    selectedContact.current = contact;
+    setShowDeleteAlert(true);
+  };
+  const onConfirmDeleteContact = () => {
+    if (!selectedContact.current) return;
+    contactsApi.delete(selectedContact.current);
+    setShowDeleteAlert(false);
   };
 
   return (
@@ -57,7 +66,7 @@ const Contacts = () => {
                 onClick: () => setShowAddContactPane(true)
               }}
             />
-            <ContactsTable contacts={contactsList} contactsApi={contactsApi} />
+            <ContactsTable contacts={contactsList} onDelete={onDeleteContact} />
           </div>
         </div>
       ) : (
@@ -69,7 +78,16 @@ const Contacts = () => {
           primaryActionLabel="Add New Contact"
         />
       )}
-      {showAddContactPane ? null : null}
+      <NewContactPane
+        showPane={showAddContactPane}
+        setShowPane={setShowAddContactPane}
+        onSubmit={onSubmitNewContact}
+      />
+      <DeleteContactAlert
+        isOpen={showDeleteAlert}
+        onClose={() => setShowDeleteAlert(false)}
+        onConfirm={onConfirmDeleteContact}
+      />
     </>
   );
 };

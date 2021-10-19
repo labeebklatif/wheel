@@ -9,7 +9,8 @@ import { Container } from "neetoui/v2/layouts";
 dayjs.extend(relativeTimePlugin);
 
 const TableRow = ({ contact, onDelete }) => {
-  const { name, type, avatar, email, created_at } = contact;
+  const { firstName, lastName, role, avatar, email, created_at } = contact;
+  const fullName = `${firstName} ${lastName}`;
   const createdDate = dayjs(created_at);
 
   return (
@@ -18,10 +19,14 @@ const TableRow = ({ contact, onDelete }) => {
         <Checkbox name="1" />
       </td>
       <td className="flex items-center">
-        <Avatar user={{ imageUrl: avatar, name }} size="large" />
+        <Avatar user={{ imageUrl: avatar, name: fullName }} size="large" />
         <div className="ml-3">
-          <Typography style="h5">{name}</Typography>
-          <Typography style="body3">{type}</Typography>
+          <Typography style="h5" className="capitalize">
+            {fullName}
+          </Typography>
+          <Typography style="body3" className="capitalize">
+            {role}
+          </Typography>
         </div>
       </td>
       <td>{email}</td>
@@ -42,7 +47,7 @@ const TableRow = ({ contact, onDelete }) => {
   );
 };
 
-const ContactsTable = ({ contacts, contactsApi }) => {
+const ContactsTable = ({ contacts, onDelete }) => {
   return (
     <Container>
       <table
@@ -64,7 +69,7 @@ const ContactsTable = ({ contacts, contactsApi }) => {
             <TableRow
               key={index}
               contact={contact}
-              onDelete={() => contactsApi.delete(contact)}
+              onDelete={() => onDelete(contact)}
             />
           ))}
         </tbody>
