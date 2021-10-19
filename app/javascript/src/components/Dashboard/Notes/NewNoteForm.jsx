@@ -3,7 +3,7 @@ import React from "react";
 import { Check } from "@bigbinary/neeto-icons";
 import { Formik, Form } from "formik";
 import { Input, Select } from "neetoui/formik";
-import { Button } from "neetoui/v2";
+import { Button, Label } from "neetoui/v2";
 
 import notesApi from "apis/notes";
 import FORM_INITIAL_VALUES from "constants/formInitialValues";
@@ -30,36 +30,32 @@ export default function NewNoteForm({ onClose, refetch }) {
         <Form>
           <div className="px-10">
             <Input
-              label="Title"
+              label={<Label required>Title</Label>}
               name="title"
               placeholder="Enter note title"
               className="mb-6"
-              required
             />
             <Input
-              label="Description"
+              label={<Label required>Description</Label>}
               name="description"
               placeholder="Enter note description"
               className="mb-6"
-              required
             />
             <Select
-              label="Assigned Contact"
+              label={<Label required>Assigned Contact</Label>}
               name="assigned-contact"
               options={FORM_SELECT_OPTIONS.addNoteForm.assignedContact}
               onChange={({ value }) => handleChange("assigned-contact")(value)}
               placeholder="Select a Contact"
               className="mb-6"
-              required
             />
             <Select
-              label="Tags"
+              label={<Label required>Tags</Label>}
               name="tags"
               options={FORM_SELECT_OPTIONS.addNoteForm.tags}
               onChange={({ value }) => handleChange("tags")(value)}
               placeholder="Select a Tag"
               className="mb-6"
-              required
             />
           </div>
 
