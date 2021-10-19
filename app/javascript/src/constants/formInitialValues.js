@@ -18,5 +18,11 @@ export default {
     description: "",
     "assigned-contact": "",
     tags: ""
+  },
+  addContactForm: {
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: ""
   }
 };

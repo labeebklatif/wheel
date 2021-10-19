@@ -5,56 +5,52 @@ import { Formik, Form } from "formik";
 import { Input, Select } from "neetoui/formik";
 import { Button, Label } from "neetoui/v2";
 
-import notesApi from "apis/notes";
 import FORM_INITIAL_VALUES from "constants/formInitialValues";
 import FORM_SELECT_OPTIONS from "constants/formSelectOptions";
 import FORM_VALIDATION_SCHEMAS from "constants/formValidationSchemas";
 
-export default function NewNoteForm({ onClose, refetch }) {
+export default function AddContactForm({ onClose, onSubmit }) {
   const handleSubmit = async values => {
     try {
-      await notesApi.create(values);
-      refetch();
-      onClose();
+      onSubmit(values);
     } catch (err) {
       logger.error(err);
     }
   };
   return (
     <Formik
-      initialValues={FORM_INITIAL_VALUES.addNoteForm}
+      initialValues={FORM_INITIAL_VALUES.addContactForm}
       onSubmit={handleSubmit}
-      validationSchema={FORM_VALIDATION_SCHEMAS.addNoteForm}
+      validationSchema={FORM_VALIDATION_SCHEMAS.addContactForm}
     >
       {({ isSubmitting, handleChange }) => (
         <Form>
-          <div className="px-10">
+          <div className="px-10 mt-2 neeto-form-fields">
+            <div className="flex mb-6">
+              <Input
+                label={<Label required>First Name</Label>}
+                name="firstName"
+                placeholder="Enter first name"
+              />
+              <Input
+                label={<Label required>Last Name</Label>}
+                name="lastName"
+                placeholder="Enter last name"
+                className="ml-6"
+              />
+            </div>
             <Input
-              label={<Label required>Title</Label>}
-              name="title"
-              placeholder="Enter note title"
-              className="mb-6"
-            />
-            <Input
-              label={<Label required>Description</Label>}
-              name="description"
-              placeholder="Enter note description"
+              label={<Label required>Email Address</Label>}
+              name="email"
+              placeholder="Enter email address"
               className="mb-6"
             />
             <Select
-              label={<Label required>Assigned Contact</Label>}
-              name="assigned-contact"
-              options={FORM_SELECT_OPTIONS.addNoteForm.assignedContact}
-              onChange={({ value }) => handleChange("assigned-contact")(value)}
+              label={<Label required>Role</Label>}
+              name="role"
+              options={FORM_SELECT_OPTIONS.addContactForm.roles}
+              onChange={({ value }) => handleChange("role")(value)}
               placeholder="Select a Contact"
-              className="mb-6"
-            />
-            <Select
-              label={<Label required>Tags</Label>}
-              name="tags"
-              options={FORM_SELECT_OPTIONS.addNoteForm.tags}
-              onChange={({ value }) => handleChange("tags")(value)}
-              placeholder="Select a Tag"
               className="mb-6"
             />
           </div>

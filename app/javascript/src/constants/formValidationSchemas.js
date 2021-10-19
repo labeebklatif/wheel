@@ -28,5 +28,11 @@ export default {
     description: Yup.string().required("Description is required"),
     "assigned-contact": Yup.string().required("Contact is required"),
     tags: Yup.string().required("Tags is required")
+  }),
+  addContactForm: Yup.object({
+    firstName: Yup.string().required("Required"),
+    lastName: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email address").required("Required"),
+    role: Yup.string().required("Required")
   })
 };
