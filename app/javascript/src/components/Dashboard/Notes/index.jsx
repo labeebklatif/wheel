@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import EmptyNotesListImage from "images/EmptyNotesList";
 import { PageLoader } from "neetoui";
@@ -22,6 +22,7 @@ const Notes = () => {
     getInitialNoteCategory()
   );
   const [notes, setNotes] = useState([]);
+  const selectedNoteId = useRef(null);
 
   useEffect(() => {
     fetchNotes();
@@ -37,6 +38,16 @@ const Notes = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const onDeleteNote = note => {
+    selectedNoteId.current = note.id;
+    setIsDeleteAlertOpen(true);
+  };
+
+  const onCloseDeleteAlert = () => {
+    setIsDeleteAlertOpen(false);
+    selectedNoteId.current = null;
   };
 
   if (loading) {
@@ -60,10 +71,7 @@ const Notes = () => {
                 onClick: () => setIsNewNotePaneOpen(true)
               }}
             />
-            <NotesList
-              notes={notes}
-              noteApi={{ onDelete: () => setIsDeleteAlertOpen(true) }}
-            />
+            <NotesList notes={notes} noteApi={{ onDelete: onDeleteNote }} />
           </div>
         </div>
       ) : (
@@ -80,13 +88,12 @@ const Notes = () => {
         setShowPane={setIsNewNotePaneOpen}
         fetchNotes={fetchNotes}
       />
-      {isDeleteAlertOpen && (
-        <DeleteAlert
-          selectedNoteIds={[]}
-          onClose={() => setIsDeleteAlertOpen(false)}
-          refetch={fetchNotes}
-        />
-      )}
+      <DeleteAlert
+        isOpen={isDeleteAlertOpen}
+        selectedNoteIds={[selectedNoteId.current]}
+        onClose={onCloseDeleteAlert}
+        refetch={fetchNotes}
+      />
     </>
   );
 };

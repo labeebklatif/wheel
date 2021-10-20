@@ -12,7 +12,7 @@ const NotesList = ({ notes, noteApi }) => {
           key={note.id}
           item={note}
           onEdit={onEdit}
-          onDelete={onDelete}
+          onDelete={() => onDelete(note)}
         />
       ))}
     </div>

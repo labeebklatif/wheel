@@ -2,21 +2,12 @@ import React, { useState } from "react";
 
 import { Modal, Button, Typography } from "neetoui/v2";
 
-import notesApi from "apis/notes";
-
-export default function DeleteAlert({
-  refetch,
-  isOpen,
-  onClose,
-  selectedNoteIds
-}) {
+export default function DeleteContactAlert({ isOpen, onClose, onConfirm }) {
   const [deleting, setDeleting] = useState(false);
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await notesApi.destroy({ ids: selectedNoteIds });
-      onClose();
-      refetch();
+      onConfirm();
     } catch (error) {
       logger.error(error);
     } finally {
