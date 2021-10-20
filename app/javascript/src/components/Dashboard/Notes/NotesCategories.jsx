@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 import { Search, Settings, Plus } from "neetoicons";
-import { Typography } from "neetoui/v2";
-import { MenuBar } from "neetoui/v2/layouts";
+import { Typography } from "neetoui";
+import { MenuBar } from "neetoui/layouts";
 
 import { NOTE_CATEGORIES } from "./constants";
 

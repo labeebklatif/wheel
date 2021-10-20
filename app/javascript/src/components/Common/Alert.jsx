@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Modal, Button, Typography } from "neetoui/v2";
+import { Modal, Button, Typography } from "neetoui";
 
 export default function DeleteAlert({
   isOpen,

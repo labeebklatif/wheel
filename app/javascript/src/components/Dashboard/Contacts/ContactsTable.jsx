@@ -1,10 +1,10 @@
 import React from "react";
 
-import { MenuHorizontal } from "@bigbinary/neeto-icons";
 import dayjs from "dayjs";
 import relativeTimePlugin from "dayjs/plugin/relativeTime";
-import { Checkbox, Dropdown, Pagination, Avatar, Typography } from "neetoui/v2";
-import { Container } from "neetoui/v2/layouts";
+import { MenuHorizontal } from "neetoicons";
+import { Checkbox, Dropdown, Pagination, Avatar, Typography } from "neetoui";
+import { Container } from "neetoui/layouts";
 
 dayjs.extend(relativeTimePlugin);
 

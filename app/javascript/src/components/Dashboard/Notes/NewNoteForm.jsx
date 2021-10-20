@@ -1,14 +1,13 @@
 import React from "react";
 
-import { Check } from "@bigbinary/neeto-icons";
 import { Formik, Form } from "formik";
+import { Check } from "neetoicons";
+import { Button, Label } from "neetoui";
 import { Input, Select } from "neetoui/formik";
-import { Button, Label } from "neetoui/v2";
 
 import notesApi from "apis/notes";
-import FORM_INITIAL_VALUES from "constants/formInitialValues";
-import FORM_SELECT_OPTIONS from "constants/formSelectOptions";
-import FORM_VALIDATION_SCHEMAS from "constants/formValidationSchemas";
+
+import { NEW_NOTE_FORM } from "./constants";
 
 export default function NewNoteForm({ onClose, refetch }) {
   const handleSubmit = async values => {
@@ -22,44 +21,40 @@ export default function NewNoteForm({ onClose, refetch }) {
   };
   return (
     <Formik
-      initialValues={FORM_INITIAL_VALUES.addNoteForm}
+      initialValues={NEW_NOTE_FORM.INITIAL_VALUES}
       onSubmit={handleSubmit}
-      validationSchema={FORM_VALIDATION_SCHEMAS.addNoteForm}
+      validationSchema={NEW_NOTE_FORM.VALIDATION_SCHEMA}
     >
       {({ isSubmitting, handleChange }) => (
-        <Form>
-          <div className="px-10">
+        <Form className="divide-y divide-gray-400">
+          <div className="px-10 space-y-6">
             <Input
               label={<Label required>Title</Label>}
               name="title"
               placeholder="Enter note title"
-              className="mb-6"
             />
             <Input
               label={<Label required>Description</Label>}
               name="description"
               placeholder="Enter note description"
-              className="mb-6"
             />
             <Select
               label={<Label required>Assigned Contact</Label>}
               name="assigned-contact"
-              options={FORM_SELECT_OPTIONS.addNoteForm.assignedContact}
+              options={NEW_NOTE_FORM.SELECT_OPTIONS.assignedContact}
               onChange={({ value }) => handleChange("assigned-contact")(value)}
               placeholder="Select a Contact"
-              className="mb-6"
             />
             <Select
               label={<Label required>Tags</Label>}
               name="tags"
-              options={FORM_SELECT_OPTIONS.addNoteForm.tags}
+              options={NEW_NOTE_FORM.SELECT_OPTIONS.tags}
               onChange={({ value }) => handleChange("tags")(value)}
               placeholder="Select a Tag"
-              className="mb-6"
             />
           </div>
 
-          <div className="nui-pane__footer nui-pane__footer--absolute">
+          <div className="absolute bottom-0 w-full px-10 py-8">
             <Button
               type="submit"
               label="Save Changes"

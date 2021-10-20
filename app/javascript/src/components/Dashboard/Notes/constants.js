@@ -1,3 +1,5 @@
+import * as Yup from "yup";
+
 export const NOTE_CATEGORIES = {
   USER_TYPES: [
     {
@@ -57,4 +59,41 @@ export const NOTE_CATEGORIES = {
       count: 60
     }
   ]
+};
+
+export const NEW_NOTE_FORM = {
+  INITIAL_VALUES: {
+    title: "",
+    description: "",
+    "assigned-contact": "",
+    tags: ""
+  },
+  SELECT_OPTIONS: {
+    assignedContact: [
+      {
+        label: "Contact 1",
+        value: "contact1"
+      },
+      {
+        label: "Contact 2",
+        value: "contact2"
+      }
+    ],
+    tags: [
+      {
+        label: "Tag 1",
+        value: "tag1"
+      },
+      {
+        label: "Tag 2",
+        value: "tag2"
+      }
+    ]
+  },
+  VALIDATION_SCHEMA: Yup.object({
+    title: Yup.string().required("Title is required"),
+    description: Yup.string().required("Description is required"),
+    "assigned-contact": Yup.string().required("Contact is required"),
+    tags: Yup.string().required("Tags is required")
+  })
 };
