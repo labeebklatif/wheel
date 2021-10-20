@@ -4,9 +4,9 @@ import EmptyNotesListImage from "images/EmptyNotesList";
 import { PageLoader } from "neetoui";
 
 import notesApi from "apis/notes";
+import Alert from "components/Common/Alert";
 import EmptyState from "components/Common/EmptyState";
 
-import DeleteAlert from "./DeleteAlert";
 import { getInitialNoteCategory } from "./helpers";
 import NewNotePane from "./NewNotePane";
 import NotesCategories from "./NotesCategories";
@@ -44,10 +44,18 @@ const Notes = () => {
     selectedNoteId.current = note.id;
     setIsDeleteAlertOpen(true);
   };
-
   const onCloseDeleteAlert = () => {
     setIsDeleteAlertOpen(false);
     selectedNoteId.current = null;
+  };
+  const onConfirmDelete = async () => {
+    try {
+      await notesApi.destroy({ ids: [selectedNoteId.current] });
+      onCloseDeleteAlert();
+      fetchNotes();
+    } catch (error) {
+      logger.error(error);
+    }
   };
 
   if (loading) {
@@ -88,11 +96,13 @@ const Notes = () => {
         setShowPane={setIsNewNotePaneOpen}
         fetchNotes={fetchNotes}
       />
-      <DeleteAlert
+      <Alert
         isOpen={isDeleteAlertOpen}
-        selectedNoteIds={[selectedNoteId.current]}
+        onConfirm={onConfirmDelete}
         onClose={onCloseDeleteAlert}
-        refetch={fetchNotes}
+        title="Delete Note"
+        content="Are you sure you want to delete the note? This action cannot be
+        undone."
       />
     </>
   );
