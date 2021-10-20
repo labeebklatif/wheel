@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
-import { Search, Settings, Plus } from "@bigbinary/neeto-icons";
+import { Search, Settings, Plus } from "neetoicons";
 import { Typography } from "neetoui/v2";
 import { MenuBar } from "neetoui/v2/layouts";
 
-import SIDEBAR_LINKS from "constants/sidebarLinks";
+import { NOTE_CATEGORIES } from "./constants";
 
-const { byUserTypes, byRegion, byTags } = SIDEBAR_LINKS;
+const { USER_TYPES, REGION, TAGS } = NOTE_CATEGORIES;
 
 const NoteCategories = ({ selectedCategory, onChangeCategory, visible }) => {
   const [isRegionSearchCollapsed, setRegionSearchCollapsed] = useState(true);
@@ -14,7 +14,7 @@ const NoteCategories = ({ selectedCategory, onChangeCategory, visible }) => {
 
   return (
     <MenuBar showMenu={visible} title="Notes">
-      {byUserTypes.map(menuItem => {
+      {USER_TYPES.map(menuItem => {
         const { key, label, count } = menuItem;
         return (
           <MenuBar.Block
@@ -31,7 +31,10 @@ const NoteCategories = ({ selectedCategory, onChangeCategory, visible }) => {
         iconProps={[
           {
             icon: () => <Search size={20} />,
-            onClick: () => setRegionSearchCollapsed(!isRegionSearchCollapsed)
+            onClick: () =>
+              setRegionSearchCollapsed(
+                isRegionSearchCollapsed => !isRegionSearchCollapsed
+              )
           }
         ]}
       >
@@ -48,7 +51,7 @@ const NoteCategories = ({ selectedCategory, onChangeCategory, visible }) => {
         collapse={isRegionSearchCollapsed}
         onCollapse={() => setRegionSearchCollapsed(true)}
       />
-      {byRegion.map(menuItem => {
+      {REGION.map(menuItem => {
         const { key, label, count } = menuItem;
         return (
           <MenuBar.Block
@@ -71,7 +74,10 @@ const NoteCategories = ({ selectedCategory, onChangeCategory, visible }) => {
           },
           {
             icon: () => <Search size={20} />,
-            onClick: () => setTagsSeachCollapsed(!isTagsSearchCollapsed)
+            onClick: () =>
+              setTagsSeachCollapsed(
+                isTagsSearchCollapsed => !isTagsSearchCollapsed
+              )
           }
         ]}
       >
@@ -88,7 +94,7 @@ const NoteCategories = ({ selectedCategory, onChangeCategory, visible }) => {
         collapse={isTagsSearchCollapsed}
         onCollapse={() => setTagsSeachCollapsed(true)}
       />
-      {byTags.map(menuItem => {
+      {TAGS.map(menuItem => {
         const { key, label, count } = menuItem;
         return (
           <MenuBar.Block

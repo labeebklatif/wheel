@@ -5,9 +5,9 @@ import { PageLoader } from "neetoui";
 
 import notesApi from "apis/notes";
 import EmptyState from "components/Common/EmptyState";
-import { getInitialSidebarLink } from "helpers/notes";
 
 import DeleteAlert from "./DeleteAlert";
+import { getInitialNoteCategory } from "./helpers";
 import NewNotePane from "./NewNotePane";
 import NotesCategories from "./NotesCategories";
 import NotesHeader from "./NotesHeader";
@@ -15,11 +15,11 @@ import NotesList from "./NotesList";
 
 const Notes = () => {
   const [loading, setLoading] = useState(true);
-  const [showNewNotePane, setShowNewNotePane] = useState(false);
-  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [showCategoryPane, setShowCategoryPane] = useState(true);
+  const [isNewNotePaneOpen, setIsNewNotePaneOpen] = useState(false);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+  const [isCategoryPaneOpen, setIsCategoryPaneOpen] = useState(true);
   const [selectedNoteCategory, setSelectedNoteCategory] = useState(
-    getInitialSidebarLink()
+    getInitialNoteCategory()
   );
   const [notes, setNotes] = useState([]);
   const selectedNoteId = useRef(null);
@@ -42,11 +42,11 @@ const Notes = () => {
 
   const onDeleteNote = note => {
     selectedNoteId.current = note.id;
-    setShowDeleteAlert(true);
+    setIsDeleteAlertOpen(true);
   };
 
   const onCloseDeleteAlert = () => {
-    setShowDeleteAlert(false);
+    setIsDeleteAlertOpen(false);
     selectedNoteId.current = null;
   };
 
@@ -59,16 +59,16 @@ const Notes = () => {
       {notes.length ? (
         <div className="flex w-full">
           <NotesCategories
-            visible={showCategoryPane}
+            visible={isCategoryPaneOpen}
             selectedCategory={selectedNoteCategory}
             onChangeCategory={setSelectedNoteCategory}
           />
           <div className="flex-1 p-4">
             <NotesHeader
               activeCategory={selectedNoteCategory}
-              onToggleMenu={() => setShowCategoryPane(!showCategoryPane)}
+              onToggleMenu={() => setIsCategoryPaneOpen(!isCategoryPaneOpen)}
               addButtonProps={{
-                onClick: () => setShowNewNotePane(true)
+                onClick: () => setIsNewNotePaneOpen(true)
               }}
             />
             <NotesList notes={notes} noteApi={{ onDelete: onDeleteNote }} />
@@ -79,17 +79,17 @@ const Notes = () => {
           image={EmptyNotesListImage}
           title="Looks like you don't have any notes!"
           subtitle="Add your notes to send customized emails to them."
-          primaryAction={() => setShowNewNotePane(true)}
+          primaryAction={() => setIsNewNotePaneOpen(true)}
           primaryActionLabel="Add New Note"
         />
       )}
       <NewNotePane
-        showPane={showNewNotePane}
-        setShowPane={setShowNewNotePane}
+        showPane={isNewNotePaneOpen}
+        setShowPane={setIsNewNotePaneOpen}
         fetchNotes={fetchNotes}
       />
       <DeleteAlert
-        isOpen={showDeleteAlert}
+        isOpen={isDeleteAlertOpen}
         selectedNoteIds={[selectedNoteId.current]}
         onClose={onCloseDeleteAlert}
         refetch={fetchNotes}

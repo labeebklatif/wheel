@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { MenuVertical } from "@bigbinary/neeto-icons";
+import { MenuVertical } from "neetoicons";
 
 import MenuItem from "./MenuItem";
 
