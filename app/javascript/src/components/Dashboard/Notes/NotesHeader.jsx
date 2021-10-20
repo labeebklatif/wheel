@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Search, Plus } from "neetoicons";
-import { Button, Input } from "neetoui/v2";
-import { Header } from "neetoui/v2/layouts";
+import { Button, Input } from "neetoui";
+import { Header } from "neetoui/layouts";
 
 const NotesHeader = ({ activeCategory, onToggleMenu, addButtonProps }) => {
   const { label } = activeCategory;

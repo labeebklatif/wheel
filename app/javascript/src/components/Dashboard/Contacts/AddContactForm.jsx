@@ -2,12 +2,10 @@ import React from "react";
 
 import { Check } from "@bigbinary/neeto-icons";
 import { Formik, Form } from "formik";
+import { Button, Label } from "neetoui";
 import { Input, Select } from "neetoui/formik";
-import { Button, Label } from "neetoui/v2";
 
-import FORM_INITIAL_VALUES from "constants/formInitialValues";
-import FORM_SELECT_OPTIONS from "constants/formSelectOptions";
-import FORM_VALIDATION_SCHEMAS from "constants/formValidationSchemas";
+import { ADD_CONTACT_FORM } from "./constants";
 
 export default function AddContactForm({ onClose, onSubmit }) {
   const handleSubmit = async values => {
@@ -19,14 +17,14 @@ export default function AddContactForm({ onClose, onSubmit }) {
   };
   return (
     <Formik
-      initialValues={FORM_INITIAL_VALUES.addContactForm}
+      initialValues={ADD_CONTACT_FORM.INITIAL_VALUES}
       onSubmit={handleSubmit}
-      validationSchema={FORM_VALIDATION_SCHEMAS.addContactForm}
+      validationSchema={ADD_CONTACT_FORM.VALIDATION_SCHEMA}
     >
       {({ isSubmitting, handleChange }) => (
         <Form>
-          <div className="px-10 mt-2 neeto-form-fields">
-            <div className="flex mb-6">
+          <div className="px-10 mt-2 space-y-6 neeto-form-fields">
+            <div className="flex">
               <Input
                 label={<Label required>First Name</Label>}
                 name="firstName"
@@ -43,19 +41,17 @@ export default function AddContactForm({ onClose, onSubmit }) {
               label={<Label required>Email Address</Label>}
               name="email"
               placeholder="Enter email address"
-              className="mb-6"
             />
             <Select
               label={<Label required>Role</Label>}
               name="role"
-              options={FORM_SELECT_OPTIONS.addContactForm.roles}
+              options={ADD_CONTACT_FORM.SELECT_OPTIONS.roles}
               onChange={({ value }) => handleChange("role")(value)}
               placeholder="Select a Contact"
-              className="mb-6"
             />
           </div>
 
-          <div className="nui-pane__footer nui-pane__footer--absolute">
+          <div className="absolute bottom-0 w-full px-10 py-8">
             <Button
               type="submit"
               label="Save Changes"

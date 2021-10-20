@@ -2,7 +2,7 @@ import React from "react";
 
 import classNames from "classnames";
 import { MenuVertical } from "neetoicons";
-import { Typography, Dropdown } from "neetoui/v2";
+import { Typography, Dropdown } from "neetoui";
 
 const CardFooter = ({ children, className }) => (
   <div

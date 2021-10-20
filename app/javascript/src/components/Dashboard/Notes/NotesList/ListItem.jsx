@@ -2,7 +2,7 @@ import React from "react";
 
 import dayjs from "dayjs";
 import relativeTimePlugin from "dayjs/plugin/relativeTime";
-import { Typography, Button, Avatar, Tooltip } from "neetoui/v2";
+import { Typography, Button, Avatar, Tooltip } from "neetoui";
 
 import Card from "components/Common/Card";
 

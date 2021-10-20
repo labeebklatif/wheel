@@ -1,7 +1,7 @@
 import React from "react";
 
 import classnames from "classnames";
-import { Typography } from "neetoui/v2";
+import { Typography } from "neetoui";
 
 const MenuItem = ({ label, active, ...otherProps }) => {
   return (
