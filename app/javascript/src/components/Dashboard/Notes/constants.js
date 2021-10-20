@@ -1,5 +1,5 @@
-export default {
-  byUserTypes: [
+export const NOTE_CATEGORIES = {
+  USER_TYPES: [
     {
       key: "user-type-all",
       label: "All",
@@ -22,7 +22,7 @@ export default {
     }
   ],
 
-  byRegion: [
+  REGION: [
     {
       key: "region-europe",
       label: "Europe",
@@ -40,7 +40,7 @@ export default {
     }
   ],
 
-  byTags: [
+  TAGS: [
     {
       key: "tag-sales",
       label: "Sales",
