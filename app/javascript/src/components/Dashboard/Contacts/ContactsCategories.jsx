@@ -4,21 +4,21 @@ import { Search, Settings, Plus } from "neetoicons";
 import { Typography } from "neetoui";
 import { MenuBar } from "neetoui/layouts";
 
-import CONTACT_CATEGORIES from "constants/contactCategories";
+import { CONTACT_CATEGORIES } from "./constants";
 
-const { byUserTypes, bySegments, byTags } = CONTACT_CATEGORIES;
+const { USER_TYPES, SEGMENTS, TAGS } = CONTACT_CATEGORIES;
 
 const ContactsCategories = ({
   selectedCategory,
   onChangeCategory,
   visible
 }) => {
-  const [isRegionSearchCollapsed, setRegionSearchCollapsed] = useState(true);
-  const [isTagsSearchCollapsed, setTagsSeachCollapsed] = useState(true);
+  const [isRegionSearchOpened, setIsRegionSearchOpened] = useState(false);
+  const [isTagsSearchOpened, setIsTagsSeachOpened] = useState(false);
 
   return (
     <MenuBar showMenu={visible} title="Contacts">
-      {byUserTypes.map(menuItem => {
+      {USER_TYPES.map(menuItem => {
         const { key, label, count } = menuItem;
         return (
           <MenuBar.Block
@@ -35,7 +35,10 @@ const ContactsCategories = ({
         iconProps={[
           {
             icon: () => <Search size={20} />,
-            onClick: () => setRegionSearchCollapsed(!isRegionSearchCollapsed)
+            onClick: () =>
+              setIsRegionSearchOpened(
+                isRegionSearchOpened => !isRegionSearchOpened
+              )
           }
         ]}
       >
@@ -49,10 +52,10 @@ const ContactsCategories = ({
         </Typography>
       </MenuBar.SubTitle>
       <MenuBar.Search
-        collapse={isRegionSearchCollapsed}
-        onCollapse={() => setRegionSearchCollapsed(true)}
+        collapse={!isRegionSearchOpened}
+        onCollapse={() => setIsRegionSearchOpened(false)}
       />
-      {bySegments.map(menuItem => {
+      {SEGMENTS.map(menuItem => {
         const { key, label, count } = menuItem;
         return (
           <MenuBar.Block
@@ -75,7 +78,8 @@ const ContactsCategories = ({
           },
           {
             icon: () => <Search size={20} />,
-            onClick: () => setTagsSeachCollapsed(!isTagsSearchCollapsed)
+            onClick: () =>
+              setIsTagsSeachOpened(isTagsSearchOpened => !isTagsSearchOpened)
           }
         ]}
       >
@@ -89,10 +93,10 @@ const ContactsCategories = ({
         </Typography>
       </MenuBar.SubTitle>
       <MenuBar.Search
-        collapse={isTagsSearchCollapsed}
-        onCollapse={() => setTagsSeachCollapsed(true)}
+        collapse={!isTagsSearchOpened}
+        onCollapse={() => setIsTagsSeachOpened(false)}
       />
-      {byTags.map(menuItem => {
+      {TAGS.map(menuItem => {
         const { key, label, count } = menuItem;
         return (
           <MenuBar.Block
