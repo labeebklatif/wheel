@@ -9,6 +9,12 @@ import notesApi from "apis/notes";
 
 import { NEW_NOTE_FORM } from "./constants";
 
+const InputLabel = ({ children, ...otherProps }) => (
+  <Label className="block mb-1" {...otherProps}>
+    {children}
+  </Label>
+);
+
 export default function NewNoteForm({ onClose, refetch }) {
   const handleSubmit = async values => {
     try {
@@ -29,24 +35,26 @@ export default function NewNoteForm({ onClose, refetch }) {
         <Form className="divide-y divide-gray-400">
           <div className="px-10 space-y-6">
             <Input
-              label={<Label required>Title</Label>}
+              label={<InputLabel required>Title</InputLabel>}
               name="title"
               placeholder="Enter note title"
+              size="large"
             />
             <Input
-              label={<Label required>Description</Label>}
+              label={<InputLabel required>Description</InputLabel>}
               name="description"
               placeholder="Enter note description"
+              size="large"
             />
             <Select
-              label={<Label required>Assigned Contact</Label>}
+              label={<InputLabel required>Assigned Contact</InputLabel>}
               name="assigned-contact"
               options={NEW_NOTE_FORM.SELECT_OPTIONS.assignedContact}
               onChange={({ value }) => handleChange("assigned-contact")(value)}
               placeholder="Select a Contact"
             />
             <Select
-              label={<Label required>Tags</Label>}
+              label={<InputLabel required>Tags</InputLabel>}
               name="tags"
               options={NEW_NOTE_FORM.SELECT_OPTIONS.tags}
               onChange={({ value }) => handleChange("tags")(value)}

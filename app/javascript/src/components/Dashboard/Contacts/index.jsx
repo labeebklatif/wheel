@@ -4,11 +4,11 @@ import EmptyNotesListImage from "images/EmptyNotesList";
 
 import Alert from "components/Common/Alert";
 import EmptyState from "components/Common/EmptyState";
-import { getInitialContactCategory } from "helpers/contacts";
 
 import ContactsCategories from "./ContactsCategories";
 import ContactsHeader from "./ContactsHeader";
 import ContactsTable from "./ContactsTable";
+import { getInitialContactCategory } from "./helpers";
 import NewContactPane from "./NewContactPane";
 
 const Contacts = () => {
