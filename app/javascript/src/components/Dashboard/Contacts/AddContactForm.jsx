@@ -13,7 +13,7 @@ const InputLabel = ({ children, ...otherProps }) => (
   </Label>
 );
 
-export default function AddContactForm({ onClose, onSubmit }) {
+export default function AddContactForm({ onClose, onSubmit, initialValues }) {
   const handleSubmit = async values => {
     try {
       onSubmit(values);
@@ -24,7 +24,9 @@ export default function AddContactForm({ onClose, onSubmit }) {
 
   return (
     <Formik
-      initialValues={ADD_CONTACT_FORM.INITIAL_VALUES}
+      initialValues={
+        initialValues ? initialValues : ADD_CONTACT_FORM.INITIAL_VALUES
+      }
       onSubmit={handleSubmit}
       validationSchema={ADD_CONTACT_FORM.VALIDATION_SCHEMA}
     >

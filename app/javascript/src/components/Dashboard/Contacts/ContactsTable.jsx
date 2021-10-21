@@ -8,7 +8,7 @@ import { Container } from "neetoui/layouts";
 
 dayjs.extend(relativeTimePlugin);
 
-const TableRow = ({ contact, onDelete }) => {
+const TableRow = ({ contact, onDelete, onEdit }) => {
   const { firstName, lastName, role, avatar, email, created_at } = contact;
   const fullName = `${firstName} ${lastName}`;
   const createdDate = dayjs(created_at);
@@ -38,7 +38,7 @@ const TableRow = ({ contact, onDelete }) => {
             buttonStyle="icon"
             autoWidth
           >
-            <li>Edit</li>
+            <li onClick={onEdit}>Edit</li>
             <li onClick={onDelete}>Delete</li>
           </Dropdown>
         </div>
@@ -47,7 +47,7 @@ const TableRow = ({ contact, onDelete }) => {
   );
 };
 
-const ContactsTable = ({ contacts, onDelete }) => {
+const ContactsTable = ({ contacts, onDelete, onEdit }) => {
   return (
     <Container>
       <table
@@ -70,6 +70,7 @@ const ContactsTable = ({ contacts, onDelete }) => {
               key={index}
               contact={contact}
               onDelete={() => onDelete(contact)}
+              onEdit={() => onEdit(contact)}
             />
           ))}
         </tbody>
