@@ -8,17 +8,17 @@ import { Container } from "neetoui/layouts";
 
 dayjs.extend(relativeTimePlugin);
 
-const TableRow = ({ contact, onDelete }) => {
+const TableRow = ({ contact, onDelete, onEdit }) => {
   const { firstName, lastName, role, avatar, email, created_at } = contact;
   const fullName = `${firstName} ${lastName}`;
   const createdDate = dayjs(created_at);
 
   return (
     <tr>
-      <td>
+      <td className="max-w-sm truncate">
         <Checkbox name="1" />
       </td>
-      <td className="flex items-center">
+      <td className="flex items-center max-w-sm truncate">
         <Avatar user={{ imageUrl: avatar, name: fullName }} size="large" />
         <div className="ml-3">
           <Typography style="h5" className="capitalize">
@@ -29,16 +29,16 @@ const TableRow = ({ contact, onDelete }) => {
           </Typography>
         </div>
       </td>
-      <td>{email}</td>
-      <td>{createdDate.format("MMM D, YYYY")}</td>
-      <td>
+      <td className="max-w-sm truncate">{email}</td>
+      <td className="max-w-sm truncate">{createdDate.format("MMM D, YYYY")}</td>
+      <td className="max-w-sm truncate">
         <div className="flex flex-row items-center justify-end space-x-3">
           <Dropdown
             icon={() => <MenuHorizontal size={27} />}
             buttonStyle="icon"
             autoWidth
           >
-            <li>Edit</li>
+            <li onClick={onEdit}>Edit</li>
             <li onClick={onDelete}>Delete</li>
           </Dropdown>
         </div>
@@ -47,7 +47,7 @@ const TableRow = ({ contact, onDelete }) => {
   );
 };
 
-const ContactsTable = ({ contacts, onDelete }) => {
+const ContactsTable = ({ contacts, onDelete, onEdit }) => {
   return (
     <Container>
       <table
@@ -70,6 +70,7 @@ const ContactsTable = ({ contacts, onDelete }) => {
               key={index}
               contact={contact}
               onDelete={() => onDelete(contact)}
+              onEdit={() => onEdit(contact)}
             />
           ))}
         </tbody>

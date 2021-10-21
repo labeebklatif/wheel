@@ -4,9 +4,13 @@ import { Pane, Typography } from "neetoui";
 
 import AddContactForm from "./AddContactForm";
 
-export default function NewContactPane({ showPane, setShowPane, onSubmit }) {
-  const onClose = () => setShowPane(false);
-
+export default function NewContactPane({
+  showPane,
+  onClose,
+  onSubmit,
+  isEditing,
+  selectedContact
+}) {
   return (
     <Pane isOpen={showPane} onClose={onClose}>
       <div className="px-10">
@@ -16,7 +20,11 @@ export default function NewContactPane({ showPane, setShowPane, onSubmit }) {
           </Typography>
         </Pane.Header>
       </div>
-      <AddContactForm onClose={onClose} onSubmit={onSubmit} />
+      <AddContactForm
+        onClose={onClose}
+        onSubmit={onSubmit}
+        initialValues={isEditing && selectedContact}
+      />
     </Pane>
   );
 }

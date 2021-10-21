@@ -4,11 +4,11 @@ import EmptyNotesListImage from "images/EmptyNotesList";
 
 import Alert from "components/Common/Alert";
 import EmptyState from "components/Common/EmptyState";
-import { getInitialContactCategory } from "helpers/contacts";
 
 import ContactsCategories from "./ContactsCategories";
 import ContactsHeader from "./ContactsHeader";
 import ContactsTable from "./ContactsTable";
+import { getInitialContactCategory } from "./helpers";
 import NewContactPane from "./NewContactPane";
 
 const Contacts = () => {
@@ -20,6 +20,7 @@ const Contacts = () => {
     getInitialContactCategory()
   );
   const selectedContact = useRef(null);
+  const isEditing = useRef(false);
 
   const contactsApi = {
     add: contact => {
@@ -28,6 +29,16 @@ const Contacts = () => {
       // @ts-ignore
       setContactsList([...contactsList, contact]);
     },
+    edit: (contact, newContact) => {
+      const indexOfContact = contactsList.indexOf(contact);
+      if (indexOfContact >= 0) {
+        const nextContacts = [...contactsList];
+        newContact.id = contact.id;
+        newContact.created_at = contact.created_at;
+        nextContacts[indexOfContact] = newContact;
+        setContactsList(nextContacts);
+      }
+    },
     delete: contact => {
       const nextContacts = contactsList.filter(({ id }) => id !== contact.id);
       // @ts-ignore
@@ -35,9 +46,23 @@ const Contacts = () => {
     }
   };
 
-  const onSubmitNewContact = values => {
-    contactsApi.add(values);
+  const onCloseAddContactPane = () => {
+    isEditing.current = false;
+    selectedContact.current = null;
     setIsAddContactPaneOpen(false);
+  };
+  const onSubmitNewContact = values => {
+    if (isEditing.current && selectedContact.current) {
+      contactsApi.edit(selectedContact.current, values);
+    } else {
+      contactsApi.add(values);
+    }
+    onCloseAddContactPane();
+  };
+  const onEditContact = contact => {
+    isEditing.current = true;
+    selectedContact.current = contact;
+    setIsAddContactPaneOpen(true);
   };
   const onDeleteContact = contact => {
     selectedContact.current = contact;
@@ -72,7 +97,11 @@ const Contacts = () => {
                 onClick: () => setIsAddContactPaneOpen(true)
               }}
             />
-            <ContactsTable contacts={contactsList} onDelete={onDeleteContact} />
+            <ContactsTable
+              contacts={contactsList}
+              onDelete={onDeleteContact}
+              onEdit={onEditContact}
+            />
           </div>
         </div>
       ) : (
@@ -86,8 +115,10 @@ const Contacts = () => {
       )}
       <NewContactPane
         showPane={isAddContactPaneOpen}
-        setShowPane={setIsAddContactPaneOpen}
+        onClose={onCloseAddContactPane}
         onSubmit={onSubmitNewContact}
+        isEditing={isEditing.current}
+        selectedContact={selectedContact.current}
       />
       <Alert
         isOpen={isDeleteAlertOpen}

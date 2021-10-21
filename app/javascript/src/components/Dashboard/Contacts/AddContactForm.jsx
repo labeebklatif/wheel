@@ -1,13 +1,19 @@
 import React from "react";
 
-import { Check } from "@bigbinary/neeto-icons";
 import { Formik, Form } from "formik";
+import { Check } from "neetoicons";
 import { Button, Label } from "neetoui";
 import { Input, Select } from "neetoui/formik";
 
 import { ADD_CONTACT_FORM } from "./constants";
 
-export default function AddContactForm({ onClose, onSubmit }) {
+const InputLabel = ({ children, ...otherProps }) => (
+  <Label className="block mb-1" {...otherProps}>
+    {children}
+  </Label>
+);
+
+export default function AddContactForm({ onClose, onSubmit, initialValues }) {
   const handleSubmit = async values => {
     try {
       onSubmit(values);
@@ -15,9 +21,12 @@ export default function AddContactForm({ onClose, onSubmit }) {
       logger.error(err);
     }
   };
+
   return (
     <Formik
-      initialValues={ADD_CONTACT_FORM.INITIAL_VALUES}
+      initialValues={
+        initialValues ? initialValues : ADD_CONTACT_FORM.INITIAL_VALUES
+      }
       onSubmit={handleSubmit}
       validationSchema={ADD_CONTACT_FORM.VALIDATION_SCHEMA}
     >
@@ -26,24 +35,27 @@ export default function AddContactForm({ onClose, onSubmit }) {
           <div className="px-10 mt-2 space-y-6 neeto-form-fields">
             <div className="flex">
               <Input
-                label={<Label required>First Name</Label>}
+                label={<InputLabel required>First Name</InputLabel>}
                 name="firstName"
                 placeholder="Enter first name"
+                size="large"
               />
               <Input
-                label={<Label required>Last Name</Label>}
+                label={<InputLabel required>Last Name</InputLabel>}
                 name="lastName"
                 placeholder="Enter last name"
                 className="ml-6"
+                size="large"
               />
             </div>
             <Input
-              label={<Label required>Email Address</Label>}
+              label={<InputLabel required>Email Address</InputLabel>}
               name="email"
               placeholder="Enter email address"
+              size="large"
             />
             <Select
-              label={<Label required>Role</Label>}
+              label={<InputLabel required>Role</InputLabel>}
               name="role"
               options={ADD_CONTACT_FORM.SELECT_OPTIONS.roles}
               onChange={({ value }) => handleChange("role")(value)}
