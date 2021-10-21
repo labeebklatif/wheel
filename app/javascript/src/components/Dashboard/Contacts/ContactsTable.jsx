@@ -15,10 +15,10 @@ const TableRow = ({ contact, onDelete }) => {
 
   return (
     <tr>
-      <td>
+      <td className="max-w-sm truncate">
         <Checkbox name="1" />
       </td>
-      <td className="flex items-center">
+      <td className="flex items-center max-w-sm truncate">
         <Avatar user={{ imageUrl: avatar, name: fullName }} size="large" />
         <div className="ml-3">
           <Typography style="h5" className="capitalize">
@@ -29,9 +29,9 @@ const TableRow = ({ contact, onDelete }) => {
           </Typography>
         </div>
       </td>
-      <td>{email}</td>
-      <td>{createdDate.format("MMM D, YYYY")}</td>
-      <td>
+      <td className="max-w-sm truncate">{email}</td>
+      <td className="max-w-sm truncate">{createdDate.format("MMM D, YYYY")}</td>
+      <td className="max-w-sm truncate">
         <div className="flex flex-row items-center justify-end space-x-3">
           <Dropdown
             icon={() => <MenuHorizontal size={27} />}

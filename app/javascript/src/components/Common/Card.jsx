@@ -14,7 +14,7 @@ const CardFooter = ({ children, className }) => (
 
 const Card = ({ title, content, actions, footer }) => {
   return (
-    <div className="p-3 border divide-y ">
+    <div className="p-3 divide-y card__container">
       <div className="mb-2">
         <div className="flex items-center justify-between">
           <Typography style="h4" className="mb-1">
